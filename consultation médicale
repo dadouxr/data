@@ -1,0 +1,51 @@
+CREATE DATABASE consultation_medicale
+CHARACTER SET utf8mb4;
+
+USE consultation_medicale;
+
+
+CREATE TABLE Medecin (
+    id_medecin INT AUTO_INCREMENT PRIMARY KEY,
+    num_ss VARCHAR(15) NOT NULL UNIQUE,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    adresse VARCHAR(255) NOT NULL
+);
+
+
+CREATE TABLE Patient (
+    id_patient INT AUTO_INCREMENT PRIMARY KEY,
+    num_ss VARCHAR(15) NOT NULL UNIQUE,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    adresse VARCHAR(255) NOT NULL
+);
+
+
+CREATE TABLE Medecin_Patient (
+    id_medecin INT NOT NULL,
+    id_patient INT NOT NULL,
+    PRIMARY KEY (id_medecin, id_patient),
+    FOREIGN KEY (id_medecin) REFERENCES Medecin(id_medecin),
+    FOREIGN KEY (id_patient) REFERENCES Patient(id_patient)
+);
+
+
+CREATE TABLE Ordonnance (
+    id_ordonnance INT AUTO_INCREMENT PRIMARY KEY,
+    date_ordonnance DATE NOT NULL,
+    id_medecin INT NOT NULL,
+    id_patient INT NOT NULL,
+    FOREIGN KEY (id_medecin) REFERENCES Medecin(id_medecin),
+    FOREIGN KEY (id_patient) REFERENCES Patient(id_patient)
+);
+
+
+CREATE TABLE Test (
+    id_test INT AUTO_INCREMENT PRIMARY KEY,
+    libelle VARCHAR(100) NOT NULL,
+    resultat VARCHAR(255),
+    date_test DATE NOT NULL,
+    id_ordonnance INT NOT NULL,
+    FOREIGN KEY (id_ordonnance) REFERENCES Ordonnance(id_ordonnance)
+);
