@@ -1,0 +1,62 @@
+CREATE DATABASE mediatheque
+CHARACTER SET utf8mb4;
+
+USE mediatheque;
+
+
+CREATE TABLE Mediatheque (
+    id_mediatheque INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    adresse VARCHAR(255) NOT NULL,
+    num_telephone VARCHAR(20) NOT NULL
+);
+
+
+CREATE TABLE Document (
+    id_document INT AUTO_INCREMENT PRIMARY KEY,
+    type VARCHAR(10) NOT NULL,
+    code_barres VARCHAR(30) NOT NULL UNIQUE,
+    titre VARCHAR(150) NOT NULL,
+    date_parution INT NOT NULL,
+    id_mediatheque INT NOT NULL,
+    FOREIGN KEY (id_mediatheque) REFERENCES Mediatheque(id_mediatheque)
+);
+
+
+CREATE TABLE Adherent (
+    id_adherent INT AUTO_INCREMENT PRIMARY KEY,
+    num_adherent VARCHAR(20) NOT NULL UNIQUE,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    adresse VARCHAR(255) NOT NULL,
+    date_inscription DATE NOT NULL,
+    id_mediatheque INT NOT NULL,
+    FOREIGN KEY (id_mediatheque) REFERENCES Mediatheque(id_mediatheque)
+);
+
+
+CREATE TABLE Auteur (
+    id_auteur INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE Document_Auteur (
+    id_document INT NOT NULL,
+    id_auteur INT NOT NULL,
+    PRIMARY KEY (id_document, id_auteur),
+    FOREIGN KEY (id_document) REFERENCES Document(id_document),
+    FOREIGN KEY (id_auteur) REFERENCES Auteur(id_auteur)
+);
+
+
+CREATE TABLE Emprunt (
+    id_emprunt INT AUTO_INCREMENT PRIMARY KEY,
+    date_emprunt DATE NOT NULL,
+    date_retour_prevue DATE NOT NULL,
+    id_adherent INT NOT NULL,
+    id_document INT NOT NULL,
+    FOREIGN KEY (id_adherent) REFERENCES Adherent(id_adherent),
+    FOREIGN KEY (id_document) REFERENCES Document(id_document)
+);
